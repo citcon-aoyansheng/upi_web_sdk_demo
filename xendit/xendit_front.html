@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Checkout demo with Citcon WebSDK</title>
+    <link href="../vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="../citcon/sdk.css" rel="stylesheet">
+    <script type="text/javascript">
+      var demoFrom = 1; // toss
+      var paymentMethod = 'toss';
+      let paymentMethodArray =['toss'];
+      let defaultPaymentMethod = 'toss';
+    </script>
+    <style>
+      .overlay {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 999;
+          background: rgba(255,255,255,0.8) url("../images/loading.gif") center no-repeat;
+      }
+      body .overlay {
+          display: none;
+      }
+      body.loading .overlay{
+          display: block;
+      }
+      .container {
+        max-width: 960px;
+      }
+      /*.border-top { border-top: 1px solid #e5e5e5; }*/
+      /*.border-bottom { border-bottom: 1px solid #e5e5e5; }*/
+      /*.border-top-gray { border-top-color: #adb5bd; }*/
+      /*.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }*/
+      .lh-condensed { line-height: 1.25; }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="py-5 text-center">
+        <h2>Checkout form</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">1</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">Product name</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <!-- <span class="text-muted"><input type="text" name="txtUnitPrice" style="width: 60px;" id="txtUnitPrice" value="180" /> </span> -->
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <label for="currency">Currency</label>
+              <select class="custom-select d-block w-100" id="currency" required>
+                <option value="">Choose...</option>
+                <option value="MXN" selected="selected">MXN</option>
+              </select>
+              <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="180" /> </strong>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Billing address</h4>
+          <form novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" value="John" required>
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name" value="Smith" required>
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="email">Email <span class="text-muted">(Optional)</span></label>
+              <input type="email" class="form-control" id="email" placeholder="Enter Email" value="john.smith@gmail.com">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+            <div class="col-md-6  mb-3">
+              <label for="phone">Phone <span class="text-muted">(Optional)</span></label>
+              <input type="text" class="form-control" id="phone" placeholder="Enter Emphoneail" value="4161234567">
+              <div class="invalid-feedback">
+                Please enter a valid phone number for shipping updates.
+              </div>
+            </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="1234 Main St" required>
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+              <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+              <input type="text" class="form-control" id="address2" placeholder="" value="">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="city">City </label>
+              <input type="text" class="form-control" id="txtCity" placeholder="" value="Hermosillo">
+            </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="country">Country</label>
+                <select class="custom-select d-block w-100" id="country" required>
+                  <option value="">Choose...</option>
+                  <option value="MX" selected="selected">Mexico</option>
+                  <!-- <option value="CA">Canada</option> -->
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="state">State</label>
+                <select class="custom-select d-block w-100" id="state" required>
+                  <option value="">Choose...</option>
+                  <option value="SO" selected="selected">SO</option>
+                  <option value="WA">Washington</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please provide a valid state.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="zip">Zip</label>
+                <input type="text" class="form-control" id="zip" value="48822" placeholder="" required>
+                <div class="invalid-feedback">
+                  Zip code required.
+                </div>
+              </div>
+            </div>
+            <!-- <hr class="mb-4">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="same-address">
+              <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="save-info">
+              <label class="custom-control-label" for="save-info">Save this information for next time</label>
+            </div> -->
+            <hr class="mb-4">
+            <h4 class="mb-3">Payment</h4>
+            <div id="citcon-sdk-root" class="d-block my-3">
+              <div id="citcon-client-container"></div>
+          
+               <div id="dropin-container"></div>
+               <div id="citcon-dropin-form"></div>
+               <div id="paypal-button"></div>
+             <!--  <div id="paypal-button-checkout"></div>
+              <div id="venmo_button_id"></div>
+              <div id="bt_credit_card"></div> -->
+            </div>
+           
+            
+
+            <hr class="mb-4">
+            <div>
+              <label>Demo For Authorize / Inquire / Modify Charge</label>
+              <div id="transactionReference"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" onclick="AuthorizePayment()" type="submit">Authorize</button>
+              </div>
+              <div class="col-md-4 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" onclick="InquireOrder()" type="submit">Inquire</button>
+              </div>
+              <!-- <div class="col-md-4 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" onclick="CancelOrder()" type="submit">Cancel</button>
+              </div> -->
+              <div class="col-md-4 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" onclick="ModifyPayment()" type="submit">Modify</button>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+
+            <div>
+              <label>Demo Charge Directly</label>
+              <div id="transactionReference"></div>
+            </div>
+          <div class="row">
+                  <button class="btn btn-primary btn-lg btn-block" onclick="SubmitPayment()" type="submit">Charge Directly </button>
+          </div>
+
+          </form>
+        </div>
+      </div>
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2021 Citcon</p>
+      </footer>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="../vendor/bootstrap.min.js"></script>
+    <!-- Citcon SDK -->
+    <script src="../../dist/core/citconpay.core.js"></script>
+    <!-- <script src="../dist/citconpay.paypal.js"></script> -->
+    <!-- <script src="../dist/citconpay.venmo.js"></script> -->
+    <!-- <script src="../dist/citconpay.creditcard.js"></script> -->
+    <script src="../js/demo_v1.js"></script>
+  </body>
+</html>

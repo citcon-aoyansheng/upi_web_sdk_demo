@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+#citcon-client-container {
+  --placeholder-color: #ccc;
+  --font-color: #4d4d4d;
+  --font-color-2: #656D7D;
+  --background-color: #f2f2f2;
+  --box-outline-color: #656d7d;
+  --error-front-color: #ff8080;
+}
+
+.citcon-banner-dropin {
+  margin-top: 20px;
+}
+.citcon-banner {
+  background-color: var(--background-color);
+  border-radius: 10px;
+  position: relative;
+}
+.citcon-banner-label1 {
+  font-weight: bold;
+  color: var(--font-color);
+}
+.citcon-banner-label2 {
+  font-weight: 600;
+  font-size: 1.5em;
+  color: var(--font-color-2);
+}
+.citcon-banner-label2-link {
+  font-size: 0.6em;
+  cursor: pointer;
+  margin-left: 10px;
+  color: royalblue !important;
+  user-select: none;
+}
+.citcon-banner-label2-link:hover {
+  text-decoration: underline !important;
+}
+.citcon-popup {
+  display: none;
+  position: absolute;
+  background-color: var(--background-color);
+  border: 1px solid var(--box-outline-color);
+  border-radius: 3px;
+  z-index: 1;
+  font-size: 0.8em;
+}
+.citcon-popup-installment {
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  margin-top: -110px;
+  margin-left: -150px;
+}
+
+.citcon-popup.active {
+  display: block;
+}
+.citcon-popup-heading {
+  background-color: var(--placeholder-color);
+  padding: 5px 10px;
+  position: relative;
+}
+.citcon-popup-heading--close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 1px;
+  padding: 5px 10px 5px;
+  cursor: pointer;
+}
+.citcon-popup-heading--close:hover {
+  background-color: var(--background-color);
+}
+.citcon-popup-content--installment {
+  border-bottom: 1px solid var(--placeholder-color);
+  padding: 10px;
+  margin-bottom: 50px;
+}
+
+.citcon-popup-footer {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.citcon-popup-footer--btn {
+  border: 1px solid var(--placeholder-color);
+  padding: 3px 5px;
+  margin-right: 10px;
+  border-radius: 3px;
+  color: var(--font-color-2);
+  cursor: pointer;
+}
+.citcon-popup-footer--btn:hover {
+  color: var(--font-color);
+  border: 1px solid var(--font-color-2);
+  background-color: #fafafa;
+}
+.citcon-installment-term {
+  padding: 7px 0 7px 10px;
+}
+.citcon-installment-term label {
+  margin-left: 6px;
+  margin-bottom: 0;
+}
+.citcon-installment-term input {
+  vertical-align: middle;
+}
+
+.citcon-card-type {
+  display: flex;
+  justify-content: right;
+}
+.citcon-card-type img {
+  flex: 0 1 auto;
+  max-width: 45px;
+  opacity: 0.5;
+  padding-left: 5px;
+}
+.citcon-card-type img.active,
+.citcon-card-type img:hover {
+  opacity: 1;
+}
+
+.citcon-banner-dropin input:focus,
+.citcon-banner-dropin select:focus {
+  outline: none;
+}
+.citcon-control {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: 1px solid var(--box-outline-color);
+}
+.citcon-control.invalid,
+.citcon-label-control.invalid input,
+.citcon-multi-control input.invalid {
+  border: 2px solid var(--error-front-color);
+}
+.citcon-control:first-child {
+  margin-top: 0;
+}
+.citcon-control label,
+.citcon-multi-control label,
+.citcon-label-control label {
+  margin-bottom: 3px;
+  font-size: 0.8em;
+  width: 100%;
+}
+.citcon-control input {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 10px;
+  border: 0;
+  border-radius: 10px;
+}
+.citcon-multi-control input,
+.citcon-label-control input {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 10px;
+  border: 1px solid var(--box-outline-color);
+  border-radius: 10px;
+}
+
+.citcon-all-in-one {
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid var(--box-outline-color);
+}
+.citcon-all-in-one input {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+}
+.citcon-all-in-one__wrapper {
+  flex: 1;
+  display: flex;
+}
+.citcon-control .citcon-all-in-one__card-number {
+  flex: 1;
+  border-radius: 10px;
+}
+.citcon-control .citcon-all-in-one__expiry {
+  flex: 0 0 100px;
+  margin-left: 10px;
+}
+.citcon-control .citcon-all-in-one__cvv {
+  flex: 0 0 100px;
+  margin-left: 10px;
+  border-radius: 10px;
+}
+
+.citcon-municipal,.citcon-Document {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.citcon-municipal select,.citcon-Document select {
+  width: 100%;
+  font-size: 14px;
+  padding: 12px 5px;
+  border-radius: 10px;
+  border: 1px solid var(--box-outline-color);
+}
+.citcon-municipal__country,.citcon-Document__document {
+  flex: 1;
+}
+.citcon-municipal__territory {
+  flex: 0 0 100px;
+  margin-left: 10px;
+}
+.citcon-municipal__mailcode {
+  flex: 0 0 100px;
+  margin-left: 10px;
+}
+.citcon-Document__documentID{
+  flex: 0 0 300px;
+  margin-left: 10px; 
+}
+.citcon-phone,
+.citcon-email,
+.citcon-document-id,
+.citcon-address {
+  margin-top: 5px;
+}
+
+.citcon-address .citcon-address__label:nth-of-type(2) {
+  margin-top: 5px;
+}
+
+.citcon-error {
+  margin-top: 5px;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--error-front-color);
+}
+
+.vault-dropin-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.vault-dropoin-option {
+  display: flex;
+  margin-top: 10px;
+  border-radius: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.vault-dropoin-option:hover,
+.vault-dropoin-option.selected {
+  background-color: #BAD0FD;
+}
+.vault-dropoin-option > div {
+  min-height: 50px;
+}
+.vault-dropoin-option--logo {
+  flex: 1 1 auto;
+  max-width: 70px;
+  min-width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vault-dropoin-option--logo > img {
+  width: 90%;
+  max-height: 45px;
+}
+.vault-dropoin-option--desc {
+  flex: 6 1 auto;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+.vault-dropoin-option--desc span {
+  font-weight: 700;
+  margin-right: 5px;
+}
+.vault-dropoin-option--expiry {
+  flex: 0 0 130px;
+  display: flex;
+  align-items: center;
+}
+.vault-dropoin-option--expiry span {
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.citcon-save-card {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.citcon-save-card label {
+  padding-left: 5px;
+  font-size: 12px;
+  margin-bottom: 0;
+}

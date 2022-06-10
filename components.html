@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Checkout demo with Citcon WebSDK</title>
+    <link href="vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="citcon/sdk.css" rel="stylesheet">
+    <script type="text/javascript">
+      var demoFrom = 1; //front end
+    </script>
+    <style>
+      .overlay {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 999;
+          background: rgba(255,255,255,0.8) url("images/loading.gif") center no-repeat;
+      }
+      body .overlay {
+          display: none;
+      }
+      body.loading .overlay{
+          display: block;
+      }
+      .container {
+        max-width: 960px;
+      }
+      /*.border-top { border-top: 1px solid #e5e5e5; }*/
+      /*.border-bottom { border-bottom: 1px solid #e5e5e5; }*/
+      /*.border-top-gray { border-top-color: #adb5bd; }*/
+      /*.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }*/
+      .lh-condensed { line-height: 1.25; }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="py-5 text-center">
+        <h2>Citcon Dropin demo page</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+<div id="citconDropIns"></div>
+        </div>
+      </div>
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2021 Citcon</p>
+      </footer>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="vendor/bootstrap.min.js"></script>
+    <!-- Citcon SDK -->
+    <script src="../dist/dropin/citconpay.dropin.js"></script>
+    <!-- <script src="../dist/citconpay.paypal.js"></script> -->
+    <!-- <script src="../dist/citconpay.venmo.js"></script> -->
+    <!-- <script src="../dist/citconpay.creditcard.js"></script> -->
+    <script type="text/javascript">
+    $( document ).ready(function() {
+      if (!citconpay) {
+        console.log('CitconSDK not loaded!');
+        return;
+      }
+      console.log(citconpay);
+      const configObj = {
+        dropinFormDetail: ['Municipal','Phone','Email','DocumentID','Address'],
+        available_countries:['US','CA','MX','BR'],
+        languages:'auto'
+      }
+      var citconDropIns = citconpay.dropin.create(configObj);
+      citconDropIns.mount("#citconDropIns");
+    });
+   
+
+    </script>
+  </body>
+</html>

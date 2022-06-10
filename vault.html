@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Checkout demo with Citcon WebSDK</title>
+    <link href="vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="citcon/sdk.css" rel="stylesheet">
+    <script type="text/javascript">
+      var demoFrom = 1; //front end
+    </script>
+    <style>
+      .overlay {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 999;
+          background: rgba(255,255,255,0.8) url("images/loading.gif") center no-repeat;
+      }
+      body .overlay {
+          display: none;
+      }
+      body.loading .overlay{
+          display: block;
+      }
+      .container {
+        max-width: 960px;
+      }
+      /*.border-top { border-top: 1px solid #e5e5e5; }*/
+      /*.border-bottom { border-bottom: 1px solid #e5e5e5; }*/
+      /*.border-top-gray { border-top-color: #adb5bd; }*/
+      /*.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }*/
+      .lh-condensed { line-height: 1.25; }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="py-5 text-center">
+        <h2>Citcon Dropin demo page</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+<div id="citconDropIns">
+  <div id="vault-container"></div>
+</div>
+        </div>
+      </div>
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2021 Citcon</p>
+      </footer>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="vendor/bootstrap.min.js"></script>
+    <!-- Citcon SDK -->
+    <script src="../dist/core/citconpay.core.js"></script> 
+    <script src="../dist/vault/citconpay.vault.js"></script>
+    <script type="text/javascript">
+      var transaction_reference = create_reference(20);
+// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+var access_token = null;
+var citconInstance = null;
+var transactionId = null;
+var chargeToken = null;
+function create_reference(length){
+  var result           = '';
+  var characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+    $( document ).ready(function() {
+      if (!citconpay) {
+        console.log('CitconSDK not loaded!');
+        return;
+      }
+      var apiUrl = merchantUrl + '?action=create_transaction&payment_method=ebanx_local_brl';
+      $.ajax({
+        url: apiUrl,
+        type:'post',
+        dataType: 'json',
+        data: JSON.stringify({
+          reference: transaction_reference,
+          totalAmount: 180,
+          currency: 'MXN',
+          countryCode: "MX",
+          autoCapture: false
+        }),
+        success:function(resp){
+          console.log('create pending transaction...' + JSON.stringify(resp));
+          if(resp.status === 'success'){
+            access_token = resp.data.access_token;
+            chargeToken = resp.data.charge_token;
+            transactionId = resp.data.transaction_id;
+          }else{
+            console.log(resp.data);
+          }
+        },
+        async:false
+      });
+
+      console.log(citconpay);
+      const options ={
+        "target": '#vault-container',
+        "rootElementID": '#citconDropIns',
+        "consumerID": '115646448'
+      };
+      const configObj = {
+        accessToken: access_token,
+        environment:'dev', //dev/qa/uat/prod,
+        debug:true,
+        consumerID:"115646448",
+        languages: 'auto',//en for English,zh_CN for Mandarin,fr for French,es for Spanish,this is optional, default is auto
+        cardTypes:['VISA','AXP','MA'],
+        threeDSPaymentMethodScope:['debitcard'], // debitcard,creditcard
+        urls: {
+          ipn: "https://api.huiuh.com/notify0",
+          mobile: "http://mobile.com",
+          success: "https://baidu.com",
+          cancel: "https://jd.com",
+          fail: "https://qq.com"
+        }
+      };
+
+      citconpay.client.core(configObj).then( clientInstance=>{
+          const vaultPayment = citconpay.vault.savedPaymentMethod;
+          vaultPayment.mount(clientInstance,options);
+      });
+    });
+   
+
+    </script>
+  </body>
+</html>

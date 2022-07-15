@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-define('API_URL','https://api.qa01.citconpay.com/v1');
+define('API_URL','https://api-eks.qa01.citconpay.com/v1');
 
 header("Content-type: application/json; charset=utf-8");
 

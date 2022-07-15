@@ -85,7 +85,7 @@ function create_reference(length){
         console.log('CitconSDK not loaded!');
         return;
       }
-      var apiUrl = merchantUrl + '?action=create_transaction&payment_method=ebanx_local_brl';
+      var apiUrl = merchantUrl + '?action=create_transaction&payment_method=braintree';
       $.ajax({
         url: apiUrl,
         type:'post',
@@ -93,8 +93,8 @@ function create_reference(length){
         data: JSON.stringify({
           reference: transaction_reference,
           totalAmount: 180,
-          currency: 'MXN',
-          countryCode: "MX",
+          currency: 'USD',
+          countryCode: "US",
           autoCapture: false
         }),
         success:function(resp){

@@ -1,8 +1,11 @@
 'use strict';
 
 var transaction_reference = create_reference(20);
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
-var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+
+var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php"; //DEV
+// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_qa.php";  //QA
+// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_uat.php"; //UAT
+// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";//PROD
 var access_token = null;
 var citconInstance = null;
 var transactionId = null;
@@ -72,12 +75,11 @@ $( document ).ready(function() {
       classname: 'payment-method-select-component',
       paymentMethods: paymentMethodArray,
       selectedPaymentMethod: defaultPaymentMethod,
-      citconDropinFormDetail: [
-        'NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'
-      ],
+      citconDropinFormDetail: citconDropins,
     }, sdkUIDidInitialized).then(function(instance) {
       
       console.log('instance ...' + JSON.stringify(instance));
+      console.log('dropin ...' + JSON.stringify(instance.dropIn));
       //.....
       registerEvents();
     }).catch(error=>{
@@ -106,9 +108,9 @@ function registerEvents(){
 
   citconInstance.on('payment-method-selected', function (e) {
     console.log('Inside `payment-method-selected` .........' + JSON.stringify(e));
-    if(e.paymentMethod=='card' || e.paymentMethod == 'xendit' || e.paymentMethod == 'ebanx'){
-      //when customer select card, show the card input UI
-      let options ={
+    let selectedPaymentMethod = e.paymentMethod;
+    //when customer select card, show the card input UI
+    let options ={
         consumer:{
           id:"115646448"
         },
@@ -120,7 +122,7 @@ function registerEvents(){
           chargeToken:chargeToken
         },
         //whether need 3DS
-        // request3DSecureVerification: true,
+        request3DSecureVerification: true,
         requestInstallment: true,
       }
       citconInstance.onPaymentMethodSelected(e.paymentMethod,options).then((rest)=>{
@@ -128,13 +130,6 @@ function registerEvents(){
       }).catch(error=>{
         console.log('onPaymentMethodSelected error:' + JSON.stringify(error));
       });
-    }else{
-      citconInstance.onPaymentMethodSelected(e.paymentMethod,{}).then((rest)=>{
-        console.log('onPaymentMethodSelected , result' + JSON.stringify(rest));
-      }).catch(error=>{
-        console.log('onPaymentMethodSelected error:' + JSON.stringify(error));
-      });
-    }
   });
 
   citconInstance.on('payment-method-submitted', function(e) {
@@ -145,6 +140,7 @@ function registerEvents(){
     console.log('....paynow..click.....');
     $("body").addClass("loading");
     switch(e.paymentMethod){
+      
       case 'paypal':
       case 'venmo':
         const rquestOptions ={
@@ -179,6 +175,7 @@ function registerEvents(){
         });
         break;
       case 'xendit':
+      case 'vault': //test paypal vault
       case 'card':
         const requestOptions ={
           payment: {
@@ -208,8 +205,8 @@ function registerEvents(){
           },
           tax:{
             tax_exempt_amount:20
-          }
-          // request3DSecureVerification:true
+          },
+          request3DSecureVerification:true
         }
         citconInstance.onPaymentMethodSubmitted(e.paymentMethod,requestOptions).then(rest=>{
           console.log('pay now click, return..' + JSON.stringify(rest));
@@ -268,19 +265,24 @@ function registerEvents(){
     
   });
 
+
+  citconInstance.on('vault-item-selected', function(e) {
+    // vault item selected, do anything you want for this event
+    console.log('....vault item selected.......' + JSON.stringify(e));    
+  });
   //on payment status change, this is the event for charge result
   //status: status, status will return "success" or "failed" 
   //retObj: retObj
-  citconInstance.on('payment-status-changedd', function(e) {
+  citconInstance.on('payment-status-changed', function(e) {
      const status = e.status;
      const res = e.data;
      
-     console.log('payment-status-changedd status..'  + JSON.stringify(e));
+     console.log('payment-status-changed status..'  + JSON.stringify(e));
      if(status == 'success'){
        //payment success
       if(res && res.payment){
         $("body").removeClass("loading");
-        let selectedPaymentMethod = res.payment.method;
+        selectedPaymentMethod = res.payment.method;
         let redirectPaymentMethodArray = ['oxxo','oxxopay','spei','mercadopago']
         if(redirectPaymentMethodArray.includes(selectedPaymentMethod)){
           //get redirect url
@@ -346,6 +348,28 @@ function ModifyPayment(){
       amount: parseInt( $("#txtAmount").val()),
       currency:$("#currency").val(),
     },
+  }
+  //Toss need to hide or show installment if amount changed
+  const paymentMethods =['card', 'banktransfer','toss','lpay','lgpay','samsungpay'];
+  if(paymentMethods.includes(selectedPaymentMethod)){
+    let options2 ={
+      consumer:{
+        id:"115646448"
+      },
+      payment: {
+        totalAmount: parseInt( $("#txtAmount").val()),
+        currency:$("#currency").val(),
+        countryCode:$("#country").val(),
+        transactionReference: transaction_reference,
+        chargeToken:chargeToken
+      },
+      requestInstallment: true,
+    }
+    citconInstance.onPaymentMethodSelected(selectedPaymentMethod,options2).then((rest)=>{
+      console.log('onPaymentMethodSelected , result' + JSON.stringify(rest));
+    }).catch(error=>{
+      console.log('onPaymentMethodSelected error:' + JSON.stringify(error));
+    });
   }
   citconInstance.modifyCharge(options).then(resp=>{
     $("body").removeClass("loading");

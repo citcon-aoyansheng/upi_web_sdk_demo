@@ -59,27 +59,78 @@
     <!-- Bootstrap -->
     <script src="vendor/bootstrap.min.js"></script>
     <!-- Citcon SDK -->
-    <script src="../dist/dropin/citconpay.dropin.js"></script>
-    <!-- <script src="../dist/citconpay.paypal.js"></script> -->
-    <!-- <script src="../dist/citconpay.venmo.js"></script> -->
-    <!-- <script src="../dist/citconpay.creditcard.js"></script> -->
+    <script src="../dist/core/citconpay.core.js"></script>
     <script type="text/javascript">
+      //This only a basic demo for dropins
+      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
+      var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+      var access_token = null;
+      var merchantKey = 'braintree';
+      var transaction_reference = create_reference(20);
+
     $( document ).ready(function() {
       if (!citconpay) {
         console.log('CitconSDK not loaded!');
         return;
       }
-      console.log(citconpay);
+      var  apiUrl = merchantUrl + '?action=create_transaction&payment_method=' + merchantKey;
+  // }
+      $.ajax({
+        url: apiUrl,
+        type:'post',
+        dataType: 'json',
+        data: JSON.stringify({
+          reference: transaction_reference,
+          totalAmount: 180,
+          currency: "USD",
+          countryCode:"US",
+          autoCapture: false
+        }),
+        success:function(resp){
+          console.log('create pending transaction...' + JSON.stringify(resp));
+          if(resp.status === 'success'){
+            access_token = resp.data.access_token;
+          }else{
+            console.log(resp.data);
+          }
+        },
+        async:false
+      });
+      //init sdk
       const configObj = {
-        dropinFormDetail: ['Municipal','Phone','Email','DocumentID','Address'],
-        available_countries:['US','CA','MX','BR'],
-        languages:'auto'
-      }
-      var citconDropIns = citconpay.dropin.create(configObj);
-      citconDropIns.mount("#citconDropIns");
+          accessToken: access_token,
+          environment:'dev', //dev/qa/uat/prod,
+          debug:true,
+          consumerID:"115646448",
+        };
+
+        citconpay.client.core(configObj).then( clientInstance=>{
+          console.log(' Init SDK...' + JSON.stringify(clientInstance));
+          // mount UI
+          citconInstance = clientInstance;
+
+          const citconDropinsOptions ={
+            citconDropinFormDetail: citconDropins,
+          }
+          citconpay.dropin.dropIn.mount("#citconDropIns",citconInstance,citconDropinsOptions);
+          
+        }).catch(error=>{
+          console.log(' Init SDK error:' + JSON.stringify(error));
+      });
+
+      
     });
    
-
+    function create_reference(length){
+      var result           = '';
+      var characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      $("#transactionReference").html('Transaction Reference:' + result);
+      return result;
+    }
     </script>
   </body>
 </html>

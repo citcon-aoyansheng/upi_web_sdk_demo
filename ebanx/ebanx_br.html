@@ -11,9 +11,11 @@
     <script type="text/javascript">
       var demoFrom = 2; //ebanx server end
       var paymentMethod = 'ebanx';
-      let paymentMethodArray =['card','oxxo','oxxopay','spei','mercadopago'];
-      let defaultPaymentMethod = 'card';
+      let paymentMethodArray =['vault','card','oxxo','oxxopay','spei','mercadopago'];
+      let defaultPaymentMethod = 'oxxo';
+      let selectedPaymentMethod = 'oxxo';
       var merchantKey = 'ebanx_local_brl';
+      var citconDropins = ['NameOnCard','AllInOne'];
     </script>
     <style>
       .overlay {

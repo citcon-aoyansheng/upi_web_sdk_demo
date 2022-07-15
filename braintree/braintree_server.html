@@ -11,9 +11,12 @@
     <script type="text/javascript">
       var demoFrom = 2; //server end
       var paymentMethod = 'braintree'; //merchant private key, 
-      let paymentMethodArray =['paypal','venmo','card'];
+      let paymentMethodArray =['vault','paypal','venmo','card'];
       let defaultPaymentMethod = 'paypal';
-      var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
+      let selectedPaymentMethod = 'paypal';
+      // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
+      var merchantKey = 'braintree';
+      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
     </script>
     <style>
       .overlay {

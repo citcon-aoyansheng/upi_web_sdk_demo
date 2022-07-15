@@ -1,11 +1,8 @@
 'use strict';
 
 var transaction_reference = create_reference(20);
-//qa
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_phase_1_qa.php";
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_uat.php";
-var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";
+
+var merchantUrl = "http://localhost:8000/upi/create_transaction";
 var access_token = null;
 var citconInstance = null;
 var transactionId = null;
@@ -18,9 +15,10 @@ $( document ).ready(function() {
   }
   //Step 1: Get Access Token and Pending charge from server
   $.ajax({
-    url: merchantUrl + '?action=create_transaction&payment_method='+merchantKey,
+    url: merchantUrl,
     type:'post',
     dataType: 'json',
+    contentType: 'application/json',
     data: JSON.stringify({
       reference: transaction_reference,
       totalAmount: parseInt($("#txtAmount").val()),
@@ -44,7 +42,7 @@ $( document ).ready(function() {
   //init sdk
   const configObj = {
     accessToken: access_token,
-    environment: 'dev', //dev/qa/uat/prod,
+    environment: 'uat', //dev/qa/uat/prod,
     debug:true,
     consumerID:"18000"
   };

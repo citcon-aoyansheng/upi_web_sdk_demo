@@ -12,8 +12,11 @@
     <script type="text/javascript">
       var demoFrom = 2; //server end
       var paymentMethod = 'braintree'; //merchant private key, 
-      let paymentMethodArray =['citcon','vault'];
+      let paymentMethodArray =['vault','citcon'];
       let defaultPaymentMethod = 'paypal';
+      let selectedPaymentMethod = 'paypal';
+      var merchantKey = 'ebanx_local_brl';
+      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
     </script>
     <style>
       .overlay {

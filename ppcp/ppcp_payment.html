@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>PayPal Standard Payments Integration | Client Demo</title>
+    </head>
+
+    <body>
+        <div id="paypal-button-container"></div>
+        <!-- Sample PayPal credentials (client-id) are included -->
+        <script
+            src="https://www.paypal.com/sdk/js?buyer-country=US&currency=USD&locale=en_US&enable-funding=venmo,paylater&components=buttons,messages,marks&commit=true&client-id=AUcOgM9FXweKVphciLnbCSyjw5JB4gfnBfKz5dLMdysNML8RmvJuDhb1kkCTZDHQmYGwV1cWQKG2ckdb"
+            
+        ></script>
+
+        <!-- <script
+        src="https://www.paypal.com/sdk/js?buyer-country=US&currency=USD&locale=en_US&intent=capture&enable-funding=venmo,paylater&components=buttons,messages,marks&commit=true&client-id=AUcOgM9FXweKVphciLnbCSyjw5JB4gfnBfKz5dLMdysNML8RmvJuDhb1kkCTZDHQmYGwV1cWQKG2ckdb"
+        data-csp-nonce="20220701151836"
+    ></script> -->
+
+        <!-- <script type="application/json" fncls="fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99">
+            {
+                "f": "20220701151840",
+                "s": "20220701151838"
+            }
+        </script>
+
+        <script type="text/javascript" src="https://c.paypal.com/da/r/fb.js"></script>
+         -->
+        <script>
+            // <!-- <script> -->
+            const fundingSources = [
+                paypal.FUNDING.PAYPAL,
+                paypal.FUNDING.PAYLATER,
+                // paypal.FUNDING.CARD,
+                paypal.FUNDING.VENMO,
+            ];
+            // let fundingSources;
+            // onClick: (data) => {
+            //     // fundingSource = "venmo"
+            //     fundingSources = data.fundingSource;
+
+            //     // Use this value to determine what funding source was used to pay
+            //     // Update your confirmation pages and notifications from "PayPal" to "Venmo"
+            // };
+
+            for (const fundingSource of fundingSources) {
+                const paypalButtonsComponent = paypal.Buttons({
+                    fundingSource: fundingSource,
+
+                    // optional styling for buttons
+                    // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
+                    style: {
+                        layout: 'horizontal',
+                        // layout: 'vertical',
+                        // shape: 'pill',
+                        shape: 'rect',
+                        color: 'white',
+                        label: 'pay',
+                        tagline: true,
+                    },
+
+                    // set up the transaction
+                    createOrder: (data, actions) => {
+                        // pass in any options from the v2 orders create call:
+                        // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+                        const createOrderPayload = {
+                            intent: 'AUTHORIZE',
+                            purchase_units: [
+                                {
+                                    amount: {
+                                        value: '2.0',
+                                        currency_code: 'USD',
+                                        breakdown: {
+                                            item_total: {
+                                                currency_code: 'USD',
+                                                value: '2.0',
+                                            },
+                                        },
+                                    },
+                                    shipping: {
+                                        name: {
+                                            full_name: 'citcon-test-1',
+                                        },
+                                        address: {
+                                            country_code: 'US',
+                                            address_line_1: '3 Main St',
+                                            address_line_2: '',
+                                            admin_area_1: 'CA',
+                                            admin_area_2: 'San Jose',
+                                            postal_code: '95132',
+                                        },
+                                        type: 'SHIPPING',
+                                    },
+                                    items: [
+                                        {
+                                            name: 'basketball shoes',
+                                            quantity: 1,
+                                            sku: 'nike',
+                                            unit_amount: {
+                                                currency_code: 'USD',
+                                                value: '1.0',
+                                            },
+                                            category: 'PHYSICAL_GOODS',
+                                        },
+                                        {
+                                            name: 'football shoes ',
+                                            quantity: 1,
+                                            sku: 'nike',
+                                            unit_amount: {
+                                                currency_code: 'USD',
+                                                value: '1.0',
+                                            },
+                                            category: 'PHYSICAL_GOODS',
+                                        },
+                                    ],
+                                },
+                            ],
+                        };
+                        console.info('create order');
+                        return actions.order.create(createOrderPayload);
+                    },
+
+                    // onShippingChange: function (data, actions) {
+                    //     console.info('shiping change');
+                    //     console.info(data);
+                    //     if (data.shipping_address.country_code !== 'US') {
+                    //         return actions.reject();
+                    //     }
+
+                    //     const baseOrderAmount = data.amount.breakdown.item_total.value;
+                    //     const shippingAmount = parseFloat(data.amount.breakdown.shipping.value) + 0.1;
+                    //     console.info(`${baseOrderAmount}-${shippingAmount}`);
+                    //     return actions.order.patch([
+                    //         {
+                    //             op: 'replace',
+                    //             path: "/purchase_units/@reference_id=='default'/amount",
+                    //             value: {
+                    //                 currency_code: 'USD',
+                    //                 value: (parseFloat(baseOrderAmount) + parseFloat(shippingAmount)).toFixed(2),
+                    //                 breakdown: {
+                    //                     item_total: {
+                    //                         currency_code: 'USD',
+                    //                         value: baseOrderAmount,
+                    //                     },
+                    //                     shipping: {
+                    //                         currency_code: 'USD',
+                    //                         value: shippingAmount,
+                    //                     },
+                    //                 },
+                    //             },
+                    //         },
+                    //     ]);
+                    //     // return actions.resolve();
+                    // },
+
+                    // finalize the transaction
+                    onApprove: (data, actions) => {
+                        const captureOrderHandler = (details) => {
+                            const payerName = details.payer.name.given_name;
+                            console.log('Transaction completed!');
+                        };
+
+                        console.info(data);
+                        console.info(actions);
+                        // return actions.order.capture().then(captureOrderHandler);
+                    },
+
+                    // handle unrecoverable errors
+                    onError: (err) => {
+                        console.error('An error prevented the buyer from checking out with PayPal', err);
+                    },
+                    onCancel: function (data) {
+                        // Show a cancel page, or return to cart
+                        console.warn('Cancel!');
+                    },
+                });
+
+                if (paypalButtonsComponent.isEligible()) {
+                    paypalButtonsComponent.render('#paypal-button-container').catch((err) => {
+                        console.error('PayPal Buttons failed to render');
+                    });
+                } else {
+                    // console.info(paypalButtonsComponent);
+                    console.log(`The funding source %s is ineligible`, fundingSource);
+                    // console.log('The funding source is ineligible')
+                }
+            }
+        </script>
+        <!-- <div
+        data-pp-message
+        data-pp-style-layout="flex"
+        data-pp-amount="2.00">
+      </div> -->
+    </body>
+</html>

@@ -4,8 +4,8 @@ var transaction_reference = create_reference(20);
 //qa
 // var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_phase_1_qa.php";
 // var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_uat.php";
-var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";
+// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";
 var access_token = null;
 var citconInstance = null;
 var transactionId = null;
@@ -25,8 +25,7 @@ $( document ).ready(function() {
       reference: transaction_reference,
       totalAmount: parseInt($("#txtAmount").val()),
       currency: $("#currency").val(),
-      countryCode:$("#country").val(),
-      autoCapture: false
+      countryCode:$("#country").val()
     }),
     success:function(resp){
       console.log('create pending transaction...' + JSON.stringify(resp));
@@ -44,7 +43,7 @@ $( document ).ready(function() {
   //init sdk
   const configObj = {
     accessToken: access_token,
-    environment: 'dev', //dev/qa/uat/prod,
+    environment: 'prod', //dev/qa/uat/prod,
     debug:true,
     consumerID:"18000"
   };
@@ -96,7 +95,8 @@ function registerEvents(){
         currency:$("#currency").val(),
         countryCode:$("#country").val(),
         transactionReference: transaction_reference,
-        chargeToken:chargeToken
+        chargeToken:chargeToken,
+        autoCapture: true,
       },
       billing_address: {
         street: $("#address").val(),

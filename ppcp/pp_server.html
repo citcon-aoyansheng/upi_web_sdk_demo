@@ -6,18 +6,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Checkout demo with Citcon WebSDK</title>
-    <link href="vendor/bootstrap.min.css" rel="stylesheet">
-    <link href="citcon/sdk.css" rel="stylesheet">
+    <link href="../vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="../citcon/sdk.css" rel="stylesheet">
     <script type="text/javascript">
       var demoFrom = 2; //server end
-      var paymentMethod = 'braintree'; //merchant private key, 
-      let paymentMethodArray =['paypal','venmo'];
+      var paymentMethod = 'ppcp_test'; //merchant private key, 
+      // 由于 PPCP UPI 没上线，暂时用 ppcp_ 来调试
+      let paymentMethodArray =['paypal','paylater','venmo'];
       let defaultPaymentMethod = 'paypal';
-      // var merchantKey ='braintree';
+      let selectedPaymentMethod = 'paypal';
       // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
-      // var merchantKey = 'sk-prod-77cb14b7b6b77b7f150f49b610f16061';
-      //sk-prod-m02dd8jwlz9b8fa4nxjdlb1a004zc3iu 
-      var merchantKey = 'sk-prod-2f050808cc8a762b8e962587074f2bc7';//VIIVA
+      var merchantKey = 'ppcp_test';
+      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
     </script>
     <style>
       .overlay {
@@ -27,7 +27,7 @@
           top: 0;
           left: 0;
           z-index: 999;
-          background: rgba(255,255,255,0.8) url("images/loading.gif") center no-repeat;
+          background: rgba(255,255,255,0.8) url("../images/loading.gif") center no-repeat;
       }
       body .overlay {
           display: none;
@@ -74,6 +74,24 @@
               <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="180" /> </strong>
             </li>
           </ul>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Languages</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between">
+              <label for="languages">languages</label>
+              <select class="custom-select d-block w-100" id="languages" required>
+                <option value="auto" >Auto</option>
+                <option value="en-ca" >English</option>
+                <option value="zh-CN" >简体中文</option>
+                <option value="fr-ca" >Français</option>
+                <option value="es-mx" >española</option>
+                <option value="pt">Português</option>
+              </select>
+            </li>
+          </ul>
+
         </div>
         <div class="col-md-8 order-md-1">
           <h4 class="mb-3">Billing address</h4>
@@ -219,12 +237,9 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"></script>
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap.min.js"></script>
+    <script src="../vendor/bootstrap.min.js"></script>
     <!-- Citcon SDK -->
-    <script src="../dist/core/citconpay.core.js"></script>
-    <!-- <script src="https://cdn.citconpay.com/v0.2.2/core/citconpay.core.js"></script> -->
-    <!-- <script src="https://cdn.citconpay.com/latest/core/citconpay.core.js"></script> -->
-
-    <script src="js/demo_phase_1.js"></script>
+    <script src="../../dist/core/citconpay.core.js"></script>
+    <script src="../js/demo_phase_2.js"></script>
   </body>
 </html>

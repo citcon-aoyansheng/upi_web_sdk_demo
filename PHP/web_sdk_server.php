@@ -1,9 +1,26 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-define('API_URL','https://api.dev01.citconpay.com/v1');
-
 header("Content-type: application/json; charset=utf-8");
 
+$api_url = "https://api.dev01.citconpay.com/v1";
+if(isset($_GET["env"])){
+    if($_GET["env"]=="dev"){
+        $api_url = "https://api.dev01.citconpay.com/v1";
+    }
+    if($_GET["env"]=="dev_eks"){
+        $api_url = "https://api-eks.dev01.citconpay.com/v1";
+    }
+    if($_GET["env"]=="qa"){
+        $api_url = "https://api-eks.qa01.citconpay.com/v1";
+    } 
+    if($_GET["env"]=="uat"){
+        $api_url = "https://api.sandbox.citconpay.com/v1";
+    }
+    if($_GET["env"]=="prod"){
+        $api_url = "https://api.citconpay.com/v1";
+    }
+}
+define(API_URL,$api_url);
 $action = $_GET['action'];
 switch($action){
     case 'access_token':
@@ -108,7 +125,7 @@ function get_client_token($token){
             "gateway" => "braintree"
         )
     );
-    $url = API_URL .'/config';
+    $url = API_URL  .'/config';
     $resp = do_http_post_with_token($url,$token,json_encode($data));
     return $resp;
 }
@@ -140,7 +157,7 @@ function create_pending_transaction($token){
     );
     $data_array['transaction'] = $transaction;
     $data = json_encode($data_array);
-    $url = API_URL .'/charges';
+    $url = API_URL  .'/charges';
     $resp = do_http_post_with_token($url,$token,$data);
     return $resp;
 }
@@ -217,7 +234,7 @@ function doPayment($nonce){
 
     $data = json_encode($data_array);
     
-    $url = API_URL ."/charges/".$chargeToken;
+    $url = API_URL  ."/charges/".$chargeToken;
     $resp = do_http_post_with_token($url,$json_data['access_token'],$data);
     return $resp;
 }
@@ -226,7 +243,7 @@ function get_access_token(){
     $data = array(
         "token_type" => "client"
     );
-    $url = API_URL .'/access-tokens';
+    $url = API_URL  .'/access-tokens';
     if(isset($_GET['payment_method'])  ){
         $resp = do_http_post_with_token($url,$_GET['payment_method'],json_encode($data));
     }else{
@@ -245,8 +262,7 @@ function create_transaction_reference(){
 }
 
 function do_http_post_with_token($url,$token,$data){
-    // $url = API_URL . "/charges";
-
+   
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_POST, true);

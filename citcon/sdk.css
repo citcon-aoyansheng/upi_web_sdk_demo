@@ -225,7 +225,9 @@
 }
 .citcon-control .invalid,
 /* .citcon-control input.invalid, */
+.citcon-label-control .invalid,
 .citcon-label-control.invalid input,
+.citcon-multi-control select.invalid,
 .citcon-multi-control input.invalid {
   border: 2px solid var(--error-front-color);
 }

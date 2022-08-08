@@ -1,16 +1,12 @@
 'use strict';
 
-var transaction_reference = create_reference(20);
-
-var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php"; //DEV
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_qa.php";  //QA
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_uat.php"; //UAT
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";//PROD
-var access_token = null;
-var citconInstance = null;
-var transactionId = null;
-var chargeToken = null;
-// var selectedLanguage = getLanguages();
+let transaction_reference = create_reference(20);
+let sdkEnv = 'dev'; //dev/dev_eks/qa/uat/prod,
+let merchantUrl = "https://cybsdev.citconpay.com/web_sdk_all.php?env="+sdkEnv; 
+let access_token = null;
+let citconInstance = null;
+let transactionId = null;
+let chargeToken = null;
 
 $( document ).ready(function() {
   if (!citconpay) {
@@ -20,10 +16,7 @@ $( document ).ready(function() {
   console.log(citconpay);
 
   //Step 1: Get Access Token and Charge Token from server
-  // var apiUrl = merchantUrl + '?action=create_transaction&payment_method=' + paymentMethod;
-  // if(paymentMethod=='toss' || paymentMethod=='xendit' || paymentMethod=='ebanx' ||  'banktransfer'){
-  var  apiUrl = merchantUrl + '?action=create_transaction&payment_method=' + merchantKey;
-  // }
+  let  apiUrl = merchantUrl + '&action=create_transaction&payment_method=' + merchantKey;
   $.ajax({
     url: apiUrl,
     type:'post',
@@ -33,7 +26,6 @@ $( document ).ready(function() {
       totalAmount: parseInt($("#txtAmount").val()),
       currency: $("#currency").val(),
       countryCode:$("#country").val(),
-      autoCapture: false
     }),
     success:function(resp){
       console.log('create pending transaction...' + JSON.stringify(resp));
@@ -51,7 +43,7 @@ $( document ).ready(function() {
   //init sdk
   const configObj = {
     accessToken: access_token,
-    environment:'dev', //dev/qa/uat/prod,
+    environment:sdkEnv, 
     debug:true,
     consumerID:"115646448",
     languages: getLanguages(),//en for English,zh_CN for Mandarin,fr for French,es for Spanish,this is optional, default is auto
@@ -140,7 +132,7 @@ function registerEvents(){
     console.log('....paynow..click.....');
     $("body").addClass("loading");
     switch(e.paymentMethod){
-      
+      case 'paylater':
       case 'paypal':
       case 'venmo':
         const rquestOptions ={
@@ -149,7 +141,8 @@ function registerEvents(){
             currency:$("#currency").val(),
             countryCode:$("#country").val(),
             transactionReference: transaction_reference,
-            chargeToken:chargeToken
+            chargeToken:chargeToken,
+            autoCapture: true,
           },
           billing_address: {
             street: $("#address").val(),
@@ -166,7 +159,7 @@ function registerEvents(){
             lastName: $("#lastName").val(),
             phone: $("#phone").val(),
             email: $("#email").val(),
-          }
+          },
         }
         citconInstance.onPaymentMethodSubmitted(e.paymentMethod,rquestOptions).then(rest=>{
           console.log('pay now click, return..' + JSON.stringify(rest));
@@ -184,7 +177,6 @@ function registerEvents(){
             countryCode:$("#country").val(),
             transactionReference: transaction_reference,
             chargeToken:chargeToken,
-            client:'desktop',
             autoCapture:true,
           },
           billing_address: {
@@ -204,9 +196,17 @@ function registerEvents(){
             email: $("#email").val(),
           },
           tax:{
-            tax_exempt_amount:20
+            taxExemptAmount:20
           },
-          request3DSecureVerification:true
+          request3DSecureVerification:true,
+          //This two parameter only for braintree card 3DS
+          //For liabilityShiftPossible & liabilityShifted, please refer to https://developer.paypal.com/braintree/docs/guides/3d-secure/legacy-3d-secure/client-side
+          // liabilityShiftPossibleContinue means when braintree 3DS return liabilityShiftPossible = false whether contine
+          // bothFailedContinue means braintree 3DS return liabilityShiftPossible = false AND liabilityShifted = false whether continue ,default is false, 
+          // if you set to true, means you will accept the risk
+          // for braintree 3DS  testing card, please refer to https://developer.paypal.com/braintree/docs/guides/3d-secure/legacy-3d-secure/testing-go-live
+          liabilityShiftPossibleContinue:false,
+          bothFailedContinue:false
         }
         citconInstance.onPaymentMethodSubmitted(e.paymentMethod,requestOptions).then(rest=>{
           console.log('pay now click, return..' + JSON.stringify(rest));
@@ -228,7 +228,6 @@ function registerEvents(){
             currency:$("#currency").val(),
             countryCode:$("#country").val(),
             transactionReference: transaction_reference,
-            client:'desktop',
             // client will be desktop  or mobile_browser
             chargeToken:chargeToken
           }
@@ -251,7 +250,7 @@ function registerEvents(){
               email: $("#email").val(),
             },
             tax:{
-              tax_exempt_amount:20
+              taxExemptAmount:20
             }
           }
           citconInstance.onPaymentMethodSubmitted(e.paymentMethod,oxxoOptions).then(rest=>{

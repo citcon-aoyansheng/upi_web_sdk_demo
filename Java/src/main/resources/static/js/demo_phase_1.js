@@ -96,7 +96,7 @@ function registerEvents(){
         transactionReference: transaction_reference,
         chargeToken:chargeToken
       },
-      billing_address: {
+      billingAddress: {
         street: $("#address").val(),
         street2:$("#address2").val(),
         city: $("#txtCity").val(),

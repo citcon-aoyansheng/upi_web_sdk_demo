@@ -46,7 +46,7 @@ $( document ).ready(function() {
     environment:sdkEnv, 
     debug:true,
     consumerID:"115646448",
-    languages: getLanguages(),//en for English,zh_CN for Mandarin,fr for French,es for Spanish,this is optional, default is auto
+    languages: 'en-US',// getLanguages(),//en for English,zh_CN for Mandarin,fr for French,es for Spanish,this is optional, default is auto
     cardTypes:['VISA','AXP','MA','JCB','DFS'],
     threeDSPaymentMethodScope:['debitcard'], // debitcard,creditcard
     urls: {
@@ -144,7 +144,7 @@ function registerEvents(){
             chargeToken:chargeToken,
             autoCapture: true,
           },
-          billing_address: {
+           billingAddress: {
             street: $("#address").val(),
             street2:$("#address2").val(),
             city: $("#txtCity").val(),
@@ -179,7 +179,7 @@ function registerEvents(){
             chargeToken:chargeToken,
             autoCapture:true,
           },
-          billing_address: {
+           billingAddress: {
             street: $("#address").val(),
             street2:$("#address2").val(),
             city: $("#txtCity").val(),
@@ -233,7 +233,7 @@ function registerEvents(){
           }
           const oxxoOptions ={
             payment: paymentJSON,
-            billing_address: {
+             billingAddress: {
               street: $("#address").val(),
               street2:$("#address2").val(),
               city: $("#txtCity").val(),
@@ -380,77 +380,12 @@ function ModifyPayment(){
     console.log('do mofiy charge error....'+ JSON.stringify(error));
   });  
 }
-// function ConfirmPayment(){
-//   $("body").addClass("loading");
-//   const options ={
-//     transaction:{
-//       chargeToken: chargeToken,
-//       reference: transaction_reference,
-//       country: $("#country").val()
-//     },
-//     billing_address: {
-//       street: $("#address").val(),
-//       street2:$("#address2").val(),
-//       city: $("#txtCity").val(),
-//       state: $("#state").val(),
-//       zip: $("#zip").val(),
-//       country: $("#country").val()
-//     },
-//     consumer:{
-//       reference: "consumer_web_sdk",
-//       firstName: $("#firstName").val(),
-//       lastName: $("#lastName").val(),
-//       phone: $("#phone").val(),
-//       email: $("#email").val(),
-//     }
-//   }
-//   citconInstance.confirmCharge(options).then(resp=>{
-//     $("body").removeClass("loading");
-//     console.log('do confirm charge....'+ JSON.stringify(resp));
-
-//     transactionId = resp.data.id;
-//   }).catch(error=>{
-//     $("body").removeClass("loading");
-//     console.log('do confirm charge error....'+ JSON.stringify(error));
-//   });  
-// }
-// function SubmitPayment(){
-//   $("body").addClass("loading");
-
-//   const options ={
-//     payment: {
-//       totalAmount: parseInt( $("#txtAmount").val()),
-//       currency:$("#currency").val(),
-//       countryCode:$("#country").val(),
-//       transactionReference: transaction_reference
-//     },
-//     billing_address: {
-//       street: $("#address").val(),
-//       street2:$("#address2").val(),
-//       city: $("#txtCity").val(),
-//       state: $("#state").val(),
-//       zip: $("#zip").val(),
-//       country: $("#country").val()
-//     },
-//     consumer:{
-//       id:"18000",
-//       reference: "consumer_web_sdk",
-//       firstName: $("#firstName").val(),
-//       lastName: $("#lastName").val(),
-//       phone: $("#phone").val(),
-//       email: $("#email").val(),
-//     }
-//   }
-  
-//   citconInstance.charge(options);
-
-// }
 
 function create_reference(length){
-  var result           = '';
-  var characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
+  let result           = '';
+  let characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for ( let i = 0; i < length; i++ ) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   $("#transactionReference").html('Transaction Reference:' + result);

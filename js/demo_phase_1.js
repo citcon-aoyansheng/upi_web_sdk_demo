@@ -98,7 +98,7 @@ function registerEvents(){
         chargeToken:chargeToken,
         autoCapture: true,
       },
-      billing_address: {
+      billingAddress: {
         street: $("#address").val(),
         street2:$("#address2").val(),
         city: $("#txtCity").val(),

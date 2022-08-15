@@ -92,20 +92,20 @@ public class UPIService {
         return accessTokenResponse;
     }
     public PendingChargeData getPendingCharge(String reference,String amount,String currency,String countryCode,String token){
+
         String data = "{";
         data = data +"\"transaction\": {";
         data = data +"\"reference\": \""+reference+"\",";
         data = data +"\"amount\": "+ amount+",";
         data = data +"\"currency\": \""+currency+"\",";
         data = data +"\"country\": \"" + countryCode +"\",";
-        data = data +"\"auto_capture\": false,";
+        data = data +"\"auto_capture\": false},";
         data = data +"\"urls\": {";
-        data = data +"\"ipn\": \"http://ipn.com\",";
+        data = data +"\"ipn\": \"https://ipn.com\",";
         data = data +"\"success\": \"http://success.com\",";
         data = data +"\"fail\": \"http://fail.com\",";
         data = data +"\"mobile\": \"http://mobile.com\",";
         data = data +"\"cancel\": \"http://cancel.com\"";
-        data = data +"}";
         data = data +"}";
         data = data +"}";
         System.out.println(data);

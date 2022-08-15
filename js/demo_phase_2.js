@@ -111,7 +111,33 @@ function registerEvents(){
           currency:$("#currency").val(),
           countryCode:$("#country").val(),
           transactionReference: transaction_reference,
+          transactionId: transactionId,
           chargeToken:chargeToken
+        },
+        goods: {
+            shipping: {
+                firstName: "fist",
+                lastName: "last",
+                phone: "string",
+                email: "test@citcon.cn",
+                street: "3 Main St",
+                street2: "",
+                city: "CA",
+                state: "San Jose",
+                zip: "95132",
+                country: "US",
+                amount: 5,
+            },
+            data: [{
+                name: "shoes",
+                sku: "shoes",
+                url: "string",
+                quantity: 1,
+                unitTaxAmount: 10,
+                unitAmount: 175,
+                totalDiscountAmount: 10,
+                category : "PHYSICAL_GOODS"
+            }]
         },
         //whether need 3DS
         request3DSecureVerification: true,
@@ -141,8 +167,9 @@ function registerEvents(){
             currency:$("#currency").val(),
             countryCode:$("#country").val(),
             transactionReference: transaction_reference,
-            chargeToken:chargeToken,
             autoCapture: true,
+            transactionId: transactionId,
+            chargeToken:chargeToken
           },
            billingAddress: {
             street: $("#address").val(),
@@ -282,7 +309,7 @@ function registerEvents(){
       if(res && res.payment){
         $("body").removeClass("loading");
         selectedPaymentMethod = res.payment.method;
-        let redirectPaymentMethodArray = ['oxxo','oxxopay','spei','mercadopago']
+        let redirectPaymentMethodArray = ['oxxo','oxxopay','spei','mercadopago', 'paypal', 'venmo']
         if(redirectPaymentMethodArray.includes(selectedPaymentMethod)){
           //get redirect url
           let clients = res.payment.client;
@@ -293,6 +320,8 @@ function registerEvents(){
                window.location.href = client.content;
              }
           });
+          // default redirect
+          window.location.href = 'https://example.com/success'
         }
       }else {
         $("body").removeClass("loading");

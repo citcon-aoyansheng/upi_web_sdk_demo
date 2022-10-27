@@ -1,0 +1,136 @@
+<html>
+<head>
+    <title>PayPal Vault</title>
+    <meta charset="UTF-8">
+    <!-- Load the client component. -->
+    <script src="https://js.braintreegateway.com/web/3.70.0/js/client.min.js"></script>
+    <!-- Load the PayPal JS SDK with your PayPal Client ID-->
+<!--    <script src="https://www.paypal.com/sdk/js?client-id=AVoidK8E-S-znnxEdN7RNv0RSfwWS_DihMglh7tUzQHCgpaVAkPwo_L0vKyfuvm3gEn0Xj13NT8aCa4t&vault=true"></script>-->
+
+
+    <!-- Load the PayPal Checkout component. -->
+    <script src="https://js.braintreegateway.com/web/3.70.0/js/paypal-checkout.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="paypal-button"></div>
+<div id="paypal-button-1"></div>
+
+
+<script>
+    // $.get('http://localhost:8000/getToken', function(res) {
+
+
+        // Create a client.
+
+        braintree.client.create({
+            authorization: 'eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklqSXdNVGd3TkRJMk1UWXRjMkZ1WkdKdmVDSXNJbWx6Y3lJNkltaDBkSEJ6T2k4dllYQnBMbk5oYm1SaWIzZ3VZbkpoYVc1MGNtVmxaMkYwWlhkaGVTNWpiMjBpZlEuZXlKbGVIQWlPakUyTmpZNE9UYzVNak1zSW1wMGFTSTZJalExWXpZd01tSXlMVEV3WWpRdE5EazVNUzFpWkRjMkxUZGtOR1UyTmpabE5tTXhNU0lzSW5OMVlpSTZJbmxyZW1zNFoySjRORzE0Y0RKck5YRWlMQ0pwYzNNaU9pSm9kSFJ3Y3pvdkwyRndhUzV6WVc1a1ltOTRMbUp5WVdsdWRISmxaV2RoZEdWM1lYa3VZMjl0SWl3aWJXVnlZMmhoYm5RaU9uc2ljSFZpYkdsalgybGtJam9pZVd0NmF6aG5ZbmcwYlhod01tczFjU0lzSW5abGNtbG1lVjlqWVhKa1gySjVYMlJsWm1GMWJIUWlPblJ5ZFdWOUxDSnlhV2RvZEhNaU9sc2liV0Z1WVdkbFgzWmhkV3gwSWwwc0luTmpiM0JsSWpwYklrSnlZV2x1ZEhKbFpUcFdZWFZzZENKZExDSnZjSFJwYjI1eklqcDdJbU4xYzNSdmJXVnlYMmxrSWpvaU1URTFOalEyTkRRNE9UazVJbjE5LmFveFY4MkhIU1VaRlRpN0V6bUpxZU8yVzU0MEtjT0xxV25NcXA0T1dmZEZEQVQxZk9mdXFYb0JNZjFUNEZibFlmVG9lZXhxMTFDVUktVnNMTUR3akdBP2N1c3RvbWVyX2lkPSIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy95a3prOGdieDRteHAyazVxL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImdyYXBoUUwiOnsidXJsIjoiaHR0cHM6Ly9wYXltZW50cy5zYW5kYm94LmJyYWludHJlZS1hcGkuY29tL2dyYXBocWwiLCJkYXRlIjoiMjAxOC0wNS0wOCIsImZlYXR1cmVzIjpbInRva2VuaXplX2NyZWRpdF9jYXJkcyJdfSwiaGFzQ3VzdG9tZXIiOnRydWUsImNsaWVudEFwaVVybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy95a3prOGdieDRteHAyazVxL2NsaWVudF9hcGkiLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJtZXJjaGFudElkIjoieWt6azhnYng0bXhwMms1cSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwidmVubW8iOiJvZmYiLCJjaGFsbGVuZ2VzIjpbImN2diIsInBvc3RhbF9jb2RlIl0sInRocmVlRFNlY3VyZUVuYWJsZWQiOnRydWUsImFuYWx5dGljcyI6eyJ1cmwiOiJodHRwczovL29yaWdpbi1hbmFseXRpY3Mtc2FuZC5zYW5kYm94LmJyYWludHJlZS1hcGkuY29tL3lrems4Z2J4NG14cDJrNXEifSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwiZW52aXJvbm1lbnROb05ldHdvcmsiOmZhbHNlLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYWxsb3dIdHRwIjp0cnVlLCJkaXNwbGF5TmFtZSI6IkNpdGNvbiIsImNsaWVudElkIjoiQVhDc3U3Zm9INVJlbWIwOHhCeG1HY0tZNDEwZ000elI2VklLQ1lGYmVVeXh1c1lyUTJWM0xaV196bWxRR21sN2xTMF9mdTlEX19PdmRJNkMiLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJicmFpbnRyZWVDbGllbnRJZCI6Im1hc3RlcmNsaWVudDMiLCJtZXJjaGFudEFjY291bnRJZCI6IlNHRC10ZXN0LTMiLCJjdXJyZW5jeUlzb0NvZGUiOiJTR0QifX0='
+        }).then(function (clientInstance) {
+            // Create a PayPal Checkout component.
+            return braintree.paypalCheckout.create({
+                client: clientInstance
+            });
+        }).then(function (paypalCheckoutInstance) {
+            return paypalCheckoutInstance.loadPayPalSDK({
+                currency: 'USD',
+                // intent: 'capture'
+                vault: true
+            });
+
+        }).then(function (paypalCheckoutInstance) {
+            return paypal.Buttons({
+                fundingSource: paypal.FUNDING.PAYPAL,
+                // createOrder: function () {
+                //     let order =  paypalCheckoutInstance.createPayment({
+                //         flow: 'vault', // Required
+                //         amount: 10.00, // Required
+                //         currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+                //
+                //         // intent: 'authorize', // Must match the intent passed in with loadPayPalSDK
+                //
+                //         enableShippingAddress: true,
+                //         shippingAddressEditable: false,
+                //         requestBillingAgreement: true,
+                //         billingAgreementDetails: {
+                //             description: '服务条款：333'
+                //         },
+                //         shippingAddressOverride: {
+                //             recipientName: 'Scruff McGruff',
+                //             line1: '1234 Main St.',
+                //             line2: 'Unit 1',
+                //             city: 'Chicago',
+                //             countryCode: 'US',
+                //             postalCode: '60652',
+                //             state: 'IL',
+                //             phone: '123.456.7890'
+                //         }
+                //     });
+                //     console.log('----order response-----');
+                //     console.log(order);
+                //     return order;
+                // },
+                createBillingAgreement: function () {
+                    let order =  paypalCheckoutInstance.createPayment({
+                        flow: 'vault', // Required
+                        amount: 10.00, // Required
+                        currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+
+                        // intent: 'authorize', // Must match the intent passed in with loadPayPalSDK
+
+                        enableShippingAddress: true,
+                        shippingAddressEditable: false,
+                        requestBillingAgreement: true,
+                        billingAgreementDetails: {
+                            description: '服务条款：333'
+                        },
+                        shippingAddressOverride: {
+                            recipientName: 'Scruff McGruff',
+                            line1: '1234 Main St.',
+                            line2: 'Unit 1',
+                            city: 'Chicago',
+                            countryCode: 'US',
+                            postalCode: '60652',
+                            state: 'IL',
+                            phone: '123.456.7890'
+                        }
+                    });
+                    console.log('----order response-----');
+                        console.log(order);
+                        return order;
+                },
+
+                onApprove: function (data, actions) {
+                    console.log('----data-----');
+                    console.log(data);
+                    let result = paypalCheckoutInstance.tokenizePayment(data).then(function (payload) {
+                        // Submit `payload.nonce` to your server
+                        console.log(payload);
+                    });
+                    console.log('------approve result------');
+                    console.log(result);
+                    return result;
+                },
+
+                onCancel: function (data) {
+                    console.log('PayPal payment cancelled', JSON.stringify(data, 0, 2));
+                },
+
+                onError: function (err) {
+                    console.error('PayPal error', err);
+                }
+            }).render('#paypal-button');
+        }).then(function () {
+            // The PayPal button will be rendered in an html element with the ID
+            // `paypal-button`. This function will be called when the PayPal button
+            // is set up and ready to be used
+        }).catch(function (err) {
+            // Handle component creation error
+        });
+    // });
+
+
+
+</script>
+</body>
+</html>

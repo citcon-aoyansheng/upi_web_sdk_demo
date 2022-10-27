@@ -13,8 +13,8 @@
       var paymentMethod = 'ppcp_test'; //merchant private key, 
       // 由于 PPCP UPI 没上线，暂时用 ppcp_ 来调试
       let paymentMethodArray =['paypal','venmo'];
-      let defaultPaymentMethod = 'venmo';
-      let selectedPaymentMethod = 'venmo';
+      let defaultPaymentMethod = 'paypal';
+      let selectedPaymentMethod = 'paypal';
       // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
       var merchantKey = 'ppcp_test';
       var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
@@ -83,11 +83,14 @@
               <label for="languages">languages</label>
               <select class="custom-select d-block w-100" id="languages" required>
                 <option value="auto" >Auto</option>
-                <option value="en-ca" >English</option>
+                <option value="en-US" >English</option>
                 <option value="zh-CN" >简体中文</option>
-                <option value="fr-ca" >Français</option>
-                <option value="es-mx" >española</option>
-                <option value="pt">Português</option>
+                <option value="fr-CA" >Français</option>
+                <option value="es-MX" >española</option>
+                <option value="pt-BR">Português</option>
+                <option value="ja-JP"> 日本</option>
+                <option value="ko-KR"> 한국인</option>
+                <option value="tl-PH"> Tagalog </option>
               </select>
             </li>
           </ul>
@@ -215,9 +218,9 @@
               <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="CancelOrder()" type="submit">Cancel</button>
               </div> -->
-              <div class="col-md-4 mb-3">
+              <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="ModifyPayment()" type="submit">Modify</button>
-              </div>
+              </div> -->
             </div>
 
             <hr class="mb-4">

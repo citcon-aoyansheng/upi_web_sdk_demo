@@ -2,10 +2,9 @@
 
 var transaction_reference = create_reference(20);
 //qa
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_phase_1_qa.php";
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_uat.php";
-// var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
-var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_prod.php";
+let sdkEnv = 'dev'; //dev/dev_eks/qa/uat/prod,
+let merchantUrl = "https://websdk-demo.dev01.citconpay.com/web_sdk_all.php?env="+sdkEnv; 
+
 var access_token = null;
 var citconInstance = null;
 var transactionId = null;
@@ -18,7 +17,7 @@ $( document ).ready(function() {
   }
   //Step 1: Get Access Token and Pending charge from server
   $.ajax({
-    url: merchantUrl + '?action=create_transaction&payment_method='+merchantKey,
+    url: merchantUrl + '&action=create_transaction&payment_method='+merchantKey,
     type:'post',
     dataType: 'json',
     data: JSON.stringify({
@@ -43,9 +42,15 @@ $( document ).ready(function() {
   //init sdk
   const configObj = {
     accessToken: access_token,
-    environment: 'prod', //dev/qa/uat/prod,
+    environment: sdkEnv, //dev/qa/uat/prod,
     debug:true,
-    consumerID:"18000"
+    consumerID:"18000",
+    urls: {
+      ipn: 'google.com',
+      success: 'google.com/success',
+      fail: 'google.com/fail',
+      cancel: 'google.com/cancel'
+    }
   };
 
   console.log(' citconpay...' + JSON.stringify(citconpay));
@@ -122,9 +127,16 @@ function registerEvents(){
           console.log('pay now click, return..' + JSON.stringify(rest));
         }).catch(error=>{
           $("body").removeClass("loading");
-          console.log('pay now click, error..' + JSON.stringify(error));
+          console.log('pay now click, error..' + error.toString());
         });
         break;
+      default:
+        citconInstance.onPaymentMethodSubmitted(e.paymentMethod,paypalOptions).then(rest=>{
+          console.log(`pay now click for payment method: ${e.paymentMethod}..` + JSON.stringify(rest));
+        }).catch(error=>{
+          $("body").removeClass("loading");
+          console.log('pay now click, error..' + JSON.stringify(error));
+        });
     }
 
   });
@@ -133,24 +145,23 @@ function registerEvents(){
   //status: status, status will return "success" or "failed" 
   //retObj: retObj
   citconInstance.on('payment-status-changed', function(e) {
-     const status = e.status;
-     const res = e.data;
-     
-     console.log('payment-status-changed status..' + status + JSON.stringify(res));
-     if(status == 'success'){
-       //Phase 1, confirm charge in WebSDK
-       if(res && res.payment){
+    const status = e.status;
+    const res = e.data;
+
+    console.log('payment-status-changed status..' + status + JSON.stringify(res));
+    if (status == 'success' || status === 'succeeded') {
+      //Phase 1, confirm charge in WebSDK
+      if (res && res.payment) {
         $("body").removeClass("loading");
-        // window.location.href ='checkout_success.html';
-      }else {
+        window.location.href = 'checkout_success.html';
+      } else {
         $("body").removeClass("loading");
       }
-     }else{
+    } else if (['canceled', 'expired', 'failed', 'fail'].includes(status)) {
       $("body").removeClass("loading");
       console.log('An error occurred:', res.message);
-        // window.location.href = "checkout_fail.html";
-        
-     }
+      window.location.href = "checkout_fail.html";
+    }
   });
 }
 

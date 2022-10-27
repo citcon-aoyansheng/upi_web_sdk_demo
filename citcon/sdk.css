@@ -93,8 +93,9 @@
   line-height: 1.5;
   border-radius: 0.3rem;
   font-weight: 700;
-  background-color: var(--bootstrap-primary);
+  /* background-color: var(--bootstrap-primary); */
   color: white;
+  background-color: #1b62f6;
   width: 100%;
   user-select: none;
   cursor: pointer;
@@ -194,6 +195,9 @@
   display: flex;
   justify-content: right;
 }
+.ebanx-card-widget{
+  display: block !important;
+}
 .citcon-card-type img {
   flex: 0 1 auto;
   max-width: 45px;
@@ -284,12 +288,16 @@
   margin-left: 10px;
   border-radius: 10px;
 }
+.citcon-control .citcon-all-in-one__suxfix{
+  flex: 0 0 50px;
+  margin-left: 10px;
+}
 .citcon-municipal,.citcon-Document {
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
 }
-.citcon-municipal select,.citcon-Document select {
+.citcon-municipal select,.citcon-Document select, #citcon-card-with-installments-installment {
   width: 100%;
   font-size: 14px;
   padding: 12px 5px;
@@ -304,7 +312,7 @@
   margin-left: 10px;
 }
 .citcon-municipal__mailcode {
-  flex: 0 0 100px;
+  flex: 0 0 140px;
   margin-left: 10px;
 }
 .citcon-Document__documentID{
@@ -371,10 +379,12 @@
   flex: 6 1 auto;
   display: flex;
   align-items: center;
+  /* color:#cccccc; */
 }
 .vault-dropin-option--desc span {
   font-weight: 700;
   margin-right: 5px;
+  color:#000000;
 }
 .vault-dropin-option--expiry {
   flex: 0 0 130px;
@@ -403,4 +413,80 @@
 .citcon-error-electment{
   padding-left: 10px;
   color:#ff0000;
+}
+.citcon-card-with-installment{
+  display: block;
+}
+.citcon-card-ext{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.citcon-card-ext-expiry{
+  flex:1;
+  margin-right: 20px;
+}
+.citcon-card-ext-cvv{
+  flex:0 0 200px
+}
+.citcon-card-with-installment .citcon-card-expiry{
+  margin-top: auto !important;
+}
+.logo-container{
+  text-align: end;
+}
+.logo-container img{
+  max-height: 50px;
+}
+
+.citcon-cvv-container-input-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 0.5rem;
+  overflow: hidden;
+  background: #fff;
+  margin: 2px 2px;
+  /* border-radius: 4px; */
+  /* border: 1px solid var(--box-outline-color); */
+}
+
+#citcon-cvv-container .suxfix img{
+  height: 26px;
+}
+.citcon-all-in-one__suxfix img{
+  margin-top: 8px;
+  height: 26px;
+}
+.citcon-cvv-container-input-box input{
+  flex-grow: 1;
+  font-size: 14px;
+  background: #fff;
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+}
+.citcon-layer{
+  position: fixed; 
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+}
+.citcon-layer-paycode{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  display: flex;
+}
+.citcon-layer-paycode p{
+  margin: 0;
+  word-break: break-all;
+  flex: 1;
+}
+.citcon-layer-paycode .label{
+  width: 100px;
 }

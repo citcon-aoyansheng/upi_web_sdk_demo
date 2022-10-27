@@ -14,7 +14,7 @@
       let paymentMethodArray =['vault','paypal','venmo','card'];
       let defaultPaymentMethod = 'paypal';
       let selectedPaymentMethod = 'paypal';
-      // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
+      // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31'; //UAT
       var merchantKey = 'braintree';
       var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
     </script>
@@ -82,11 +82,15 @@
               <label for="languages">languages</label>
               <select class="custom-select d-block w-100" id="languages" required>
                 <option value="auto" >Auto</option>
-                <option value="en-ca" >English</option>
+                <option value="en-US" >English</option>
                 <option value="zh-CN" >简体中文</option>
-                <option value="fr-ca" >Français</option>
-                <option value="es-mx" >española</option>
-                <option value="pt">Português</option>
+                <option value="fr-CA" >Français</option>
+                <option value="es-MX" >española</option>
+                <option value="pt-BR">Português</option>
+                <option value="ja-JP"> 日本</option>
+                <option value="ko-KR"> 한국인</option>
+                <option value="tl-PH"> Tagalog </option>
+                
               </select>
             </li>
           </ul>
@@ -214,9 +218,9 @@
               <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="CancelOrder()" type="submit">Cancel</button>
               </div> -->
-              <div class="col-md-4 mb-3">
+              <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="ModifyPayment()" type="submit">Modify</button>
-              </div>
+              </div> -->
             </div>
 
             <hr class="mb-4">
@@ -239,9 +243,7 @@
     <script src="../vendor/bootstrap.min.js"></script>
     <!-- Citcon SDK -->
     <script src="../../dist/core/citconpay.core.js"></script>
-    <!-- <script src="../dist/citconpay.paypal.js"></script> -->
-    <!-- <script src="../dist/citconpay.venmo.js"></script> -->
-    <!-- <script src="../dist/citconpay.creditcard.js"></script> -->
+    <!-- <script src="https://cdn.qa01.citconpay.com/v0.3.2-test-1/core/citconpay.core.js"></script> -->
     <script src="../js/demo_phase_2.js"></script>
   </body>
 </html>

@@ -16,11 +16,13 @@ switch($action){
             $resp_token = array(
                 'access_token' => $token
             );
+            // deepcode ignore XSS: no page render
             echo make_response(
                 $data_array['status'],
                 $resp_token
             );
         }else{
+            // deepcode ignore XSS: no page render
             echo make_respone($data_array['status'], $data_array['data']['message']);
         }
     }
@@ -41,17 +43,20 @@ switch($action){
                     'transaction_id' => $transaction_array['data']['id'],
                     'access_token' => $token
                 );
+                // deepcode ignore XSS: no page render
                 echo make_response(
                     $transaction_array['status'],
                     $resp_token
                 );
             }else{
+                // deepcode ignore XSS: no page render
                 echo make_response(
                     $transaction_array['status'],
                     $transaction_array['data']['message']
                 );
             }
         }else{
+            // deepcode ignore XSS: no page render
             echo make_respone($data_array['status'], $data_array['data']['message']);
         }
     }
@@ -65,17 +70,20 @@ case 'client_token':
             $client_token = get_client_token($token);
             $client_token_array = json_decode($client_token,true);
             if($client_token_array['status']=='success'){
+                // deepcode ignore XSS: no page render
                 echo make_response(
                     $client_token_array['status'],
                     $client_token_array['data']['client_token']
                 );
             }else{
+                // deepcode ignore XSS: no page render
                 echo make_response(
                     $client_token_array['status'],
                     $client_token_array['data']['message']
                 );
             }
         }else{
+            // deepcode ignore XSS: no page render
             echo make_response($data_array['status'], $data_array['data']['message']);
         }
     }
@@ -83,6 +91,7 @@ case 'client_token':
 case 'doPayment':
     $json = file_get_contents('php://input');
     $json_data = json_decode($json,true);
+    // deepcode ignore XSS: no page render
     echo doPayment($json_data['nonce']);
     break;
 default:

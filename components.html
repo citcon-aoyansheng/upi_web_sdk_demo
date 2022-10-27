@@ -43,11 +43,16 @@
       <div class="py-5 text-center">
         <h2>Citcon Dropin demo page</h2>
       </div>
+      <h4 class="mb-3">Billing address</h4>
       <div class="row">
         <div class="col-md-12 order-md-1">
-<div id="citconDropIns"></div>
+<div id="citcon-client-container">
+
+</div>
         </div>
       </div>
+      <h4 class="mb-3"> Card Payment</h4>
+      
       <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">&copy; 2021 Citcon</p>
       </footer>
@@ -62,8 +67,10 @@
     <script src="../dist/core/citconpay.core.js"></script>
     <script type="text/javascript">
       //This only a basic demo for dropins
-      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
-      var merchantUrl = "https://cybsdev.citconpay.com/web_sdk_server.php";
+      // var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
+      var citconDropins = ['FirstName','LastName','Email','Phone','Address','Municipal'];
+      let sdkEnv = 'dev_eks'; //dev/dev_eks/qa/uat/prod,
+      let merchantUrl = "https://websdk-demo.dev01.citconpay.com/web_sdk_all.php?env="+sdkEnv; 
       var access_token = null;
       var merchantKey = 'braintree';
       var transaction_reference = create_reference(20);
@@ -73,7 +80,7 @@
         console.log('CitconSDK not loaded!');
         return;
       }
-      var  apiUrl = merchantUrl + '?action=create_transaction&payment_method=' + merchantKey;
+      let  apiUrl = merchantUrl + '&action=create_transaction&payment_method=' + merchantKey;
   // }
       $.ajax({
         url: apiUrl,
@@ -99,7 +106,7 @@
       //init sdk
       const configObj = {
           accessToken: access_token,
-          environment:'dev', //dev/qa/uat/prod,
+          environment:sdkEnv, //dev/qa/uat/prod,
           debug:true,
           consumerID:"115646448",
         };
@@ -112,7 +119,7 @@
           const citconDropinsOptions ={
             citconDropinFormDetail: citconDropins,
           }
-          citconpay.dropin.dropIn.mount("#citconDropIns",citconInstance,citconDropinsOptions);
+          citconpay.dropin.dropIn.mount("#citcon-client-container",citconInstance,citconDropinsOptions);
           
         }).catch(error=>{
           console.log(' Init SDK error:' + JSON.stringify(error));

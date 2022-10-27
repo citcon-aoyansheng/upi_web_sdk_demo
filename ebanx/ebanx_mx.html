@@ -8,14 +8,15 @@
     <title>Checkout demo with Citcon WebSDK</title>
     <link href="../vendor/bootstrap.min.css" rel="stylesheet">
     <link href="../citcon/sdk.css" rel="stylesheet">
+    <link rel="stylesheet" href="../citcon/intlTelInput.css">
     <script type="text/javascript">
       var demoFrom = 2; // Ebanx
       var paymentMethod = 'ebanx';
-      let paymentMethodArray =['card','oxxo','oxxopay','spei','mercadopago'];
+      let paymentMethodArray =['vault','card','oxxo','oxxopay','spei'];
       let defaultPaymentMethod = 'card';
       let selectedPaymentMethod = 'oxxo';
       var merchantKey = 'ebanx';
-      var citconDropins = ['NameOnCard','AllInOne'];
+      var citconDropins = ['CardWithInstallments'];
     </script>
     <style>
       .overlay {
@@ -25,7 +26,7 @@
           top: 0;
           left: 0;
           z-index: 999;
-          background: rgba(255,255,255,0.8) url("images/loading.gif") center no-repeat;
+          background: rgba(255,255,255,0.8) url("../images/loading.gif") center no-repeat;
       }
       body .overlay {
           display: none;
@@ -69,7 +70,26 @@
                 <option value="">Choose...</option>
                 <option value="MXN" selected="selected">MXN</option>
               </select>
-              <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="180" /> </strong>
+              <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="1800" /> </strong>
+            </li>
+          </ul>
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Languages</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between">
+              <label for="languages">languages</label>
+              <select class="custom-select d-block w-100" id="languages" required>
+                <option value="auto">Auto</option>
+                <option value="en-US" >English</option>
+                <option value="zh-CN" >简体中文</option>
+                <option value="fr-CA" >Français</option>
+                <option value="es-MX" >española</option>
+                <option value="pt-BR">Português</option>
+                <option value="ja-JP"> 日本</option>
+                <option value="ko-KR"> 한국인</option>
+                <option value="tl-PH"> Tagalog </option>
+              </select>
             </li>
           </ul>
         </div>
@@ -95,7 +115,7 @@
             <div class="row">
             <div class="col-md-6 mb-3">
               <label for="email">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="Enter Email" value="john.smith@gmail.com">
+              <input type="email" class="form-control" id="email" placeholder="Enter Email" value="john.smith.mx@gmail.com">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -185,33 +205,33 @@
 
             <hr class="mb-4">
             <div>
-              <label>Demo For Authorize / Inquire / Modify Charge</label>
+              <label> Inquire </label>
               <div id="transactionReference"></div>
             </div>
             <div class="row">
-              <div class="col-md-4 mb-3">
+              <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="AuthorizePayment()" type="submit">Authorize</button>
-              </div>
+              </div> -->
               <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="InquireOrder()" type="submit">Inquire</button>
               </div>
               <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="CancelOrder()" type="submit">Cancel</button>
               </div> -->
-              <div class="col-md-4 mb-3">
+              <!-- <div class="col-md-4 mb-3">
                 <button class="btn btn-primary btn-lg btn-block" onclick="ModifyPayment()" type="submit">Modify</button>
-              </div>
+              </div> -->
             </div>
 
             <hr class="mb-4">
 
-            <div>
+            <!-- <div>
               <label>Demo Charge Directly</label>
               <div id="transactionReference"></div>
             </div>
           <div class="row">
                   <button class="btn btn-primary btn-lg btn-block" onclick="SubmitPayment()" type="submit">Charge Directly </button>
-          </div>
+          </div> -->
 
           </form>
         </div>

@@ -6,15 +6,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Checkout demo with Citcon WebSDK</title>
-    <link href="vendor/bootstrap.min.css" rel="stylesheet">
-    <link href="citcon/sdk.css" rel="stylesheet">
+    <link href="../vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="../citcon/sdk.css" rel="stylesheet">
     <script type="text/javascript">
       var demoFrom = 2; //server end
       var paymentMethod = 'braintree'; //merchant private key, 
-      let paymentMethodArray =['paypal','venmo'];
+      let paymentMethodArray =['vault','paypal','card'];
       let defaultPaymentMethod = 'paypal';
-      // var merchantKey ='braintree';
-      // var merchantKey = 'sk-uat-12c116d3c673bca95f6aec2295e7cb31';
+      let selectedPaymentMethod = 'paypal';
+      var merchantKey = 'sk-development-53b81d8dd3ae926c0e36dd54f7c97221'; //QA
+      // var merchantKey = 'braintree';
+      var citconDropins = ['NameOnCard','AllInOne','SaveCard','Municipal','Phone','Email','DocumentID','Address'];
     </script>
     <style>
       .overlay {
@@ -24,7 +26,7 @@
           top: 0;
           left: 0;
           z-index: 999;
-          background: rgba(255,255,255,0.8) url("images/loading.gif") center no-repeat;
+          background: rgba(255,255,255,0.8) url("../images/loading.gif") center no-repeat;
       }
       body .overlay {
           display: none;
@@ -60,17 +62,39 @@
                 <h6 class="my-0">Product name</h6>
                 <small class="text-muted">Brief description</small>
               </div>
-              <!-- <span class="text-muted"><input type="text" name="txtUnitPrice" style="width: 60px;" id="txtUnitPrice" value="180" /> </span> -->
+              <!-- <span class="text-muted"><input type="text" name="txtUnitPrice" style="width: 60px;" id="txtUnitPrice" value="18" /> </span> -->
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <label for="currency">Currency</label>
               <select class="custom-select d-block w-100" id="currency" required>
                 <option value="">Choose...</option>
-                <option value="USD" selected="selected">USD</option>
+                <option value="SGD" selected="selected">SGD</option>
               </select>
-              <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="180" /> </strong>
+              <strong><input type="text" name="txtAmount" style="width: 60px;" id="txtAmount" value="18" /> </strong>
             </li>
           </ul>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Languages</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between">
+              <label for="languages">languages</label>
+              <select class="custom-select d-block w-100" id="languages" required>
+                <option value="auto" >Auto</option>
+                <option value="en-US" >English</option>
+                <option value="zh-CN" >简体中文</option>
+                <option value="fr-CA" >Français</option>
+                <option value="es-MX" >española</option>
+                <option value="pt-BR">Português</option>
+                <option value="ja-JP"> 日本</option>
+                <option value="ko-KR"> 한국인</option>
+                <option value="tl-PH"> Tagalog </option>
+                
+              </select>
+            </li>
+          </ul>
+
         </div>
         <div class="col-md-8 order-md-1">
           <h4 class="mb-3">Billing address</h4>
@@ -110,7 +134,7 @@
 
             <div class="mb-3">
               <label for="address">Address</label>
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St"  value="1234 Main St" required>
+              <input type="text" class="form-control" id="address" placeholder="1 JALAN TERUSAN JURONG"  value="1 JALAN TERUSAN JURONG" required>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
@@ -123,7 +147,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label for="city">City </label>
-              <input type="text" class="form-control" id="txtCity" placeholder="" value="Chicago">
+              <input type="text" class="form-control" id="txtCity" placeholder="" value="Singapore">
             </div>
             </div>
 
@@ -132,7 +156,7 @@
                 <label for="country">Country</label>
                 <select class="custom-select d-block w-100" id="country" required>
                   <option value="">Choose...</option>
-                  <option value="US" selected="selected">United States</option>
+                  <option value="SG" selected="selected">Singapore</option>
                   <!-- <option value="CA">Canada</option> -->
                 </select>
                 <div class="invalid-feedback">
@@ -152,7 +176,7 @@
               </div>
               <div class="col-md-3 mb-3">
                 <label for="zip">Zip</label>
-                <input type="text" class="form-control" id="zip" value="60607" placeholder="" required>
+                <input type="text" class="form-control" id="zip" value="619284" placeholder="" required>
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -216,12 +240,10 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"></script>
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap.min.js"></script>
+    <script src="../vendor/bootstrap.min.js"></script>
     <!-- Citcon SDK -->
-    <!-- <script src="../dist/core/citconpay.core.js"></script> -->
-    <script src="https://cdn.citconpay.com/v0.2.3/core/citconpay.core.js"></script>
-    <!-- <script src="https://cdn.citconpay.com/latest/core/citconpay.core.js"></script> -->
-
-    <script src="js/demo_phase_1.js"></script>
+    <script src="../../dist/core/citconpay.core.js"></script>
+    <!-- <script src="https://cdn.qa01.citconpay.com/v0.3.2-test-1/core/citconpay.core.js"></script> -->
+    <script src="../js/demo_phase_2.js"></script>
   </body>
 </html>
